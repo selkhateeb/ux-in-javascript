@@ -22,7 +22,6 @@ function element(
         r += `${k}:${v};`;
         return r;
       }, '');
-      console.log(value);
     }
     element[key] = value;
   });
