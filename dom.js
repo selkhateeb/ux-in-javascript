@@ -15,13 +15,14 @@ function element(
 
 
   Object.entries(attributes).forEach(function add_attribute(entry) {
-    const [key, value] = entry;
+    let [key, value] = entry;
     if(key === 'style') {
       value = Object.entries(value).reduce(function(r, e) {
         const [k,v] = e;
-        r += `${k}:{$v};`;
+        r += `${k}:${v};`;
         return r;
-      });
+      }, '');
+      console.log(value);
     }
     element[key] = value;
   });
