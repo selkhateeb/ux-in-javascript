@@ -56,39 +56,6 @@ function create_tag_function(tag_name) {
   };
 }
 
-const tag_exports = {};
-
-[
-  "a",
-  "br",
-  "div",
-  "h1",
-  "h2",
-  "h3",
-  "header",
-  "input",
-  "img",
-  "li",
-  "object",
-  "button",
-  "style",
-  "span",
-  "label",
-  "link",
-  "form",
-  "fieldset",
-  "table",
-  "thead",
-  "tr",
-  "th",
-  "tbody",
-  "td",
-  "ul"
-
-].forEach(function add_to_prototype(item) {
-  tag_exports[item] = create_tag_function(item);
-});
-
 function create_bus(element) {
   if(element === undefined) {
     element = a();
@@ -121,10 +88,13 @@ function create_bus(element) {
 
 const bus = create_bus(document);
 
-export default {
+export default new Proxy({
   application,
   bus,
   create_bus,
-  element,
-  ...tag_exports
-};
+  element
+}, {
+  get: function (target, prop, receiver) {
+    return Reflect.get(...arguments) || create_tag_function(prop);
+  },
+});
